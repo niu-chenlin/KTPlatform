@@ -1,14 +1,14 @@
-// import {createApp} from "vue";
-import Vue from "vue";
+import {createApp} from "vue";
+// import Vue from "vue";
 import App from "./App";
 import "./static/style/main.less";
 //
-Vue.config.productionTip = false;
-// vue 2
-new Vue({
-    render: h => h(App),
-}).$mount('#app-root');
+// Vue.config.productionTip = false;
+// // vue 2
+// new Vue({
+//     render: h => h(App),
+// }).$mount('#app-root');
 
 // vue 3
 
-// createApp(App).mount('#app-root');
+createApp(App).mount('#app-root');
