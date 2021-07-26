@@ -8,7 +8,9 @@
     "dashboards-dll": "webpack --config ./webpack.dashboards.dll.config.js",
     "dev-dashboards": "webpack --config ./webpack.dashboards.dev.config.js",
     "product-dashboards": "webpack --config ./webpack.dashboards.product.config.js",
-    "webpack-server": "webpack-dev-server --config ./webpack.dashboards.dev.config.js"
+    "webpack-server": "webpack-dev-server --config ./webpack.dashboards.dev.config.js",
+    "dev-server": "tsc -w -p ./tsconfig.json",
+    "run-server": "set DEBUG=koa* & nodemon -r source-map-support/register ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,12 +24,14 @@
   "homepage": "https://github.com/niu-chenlin/KTPlatform#readme",
   "dependencies": {
     "core-js": "^3.15.2",
+    "ejs": "^3.1.6",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0",
     "koa-static": "^5.0.0",
     "koa-views": "^7.0.1",
     "less-loader": "^10.0.1",
+    "log4js": "^6.3.0",
     "webpack": "^5.45.1"
   },
   "devDependencies": {
@@ -41,8 +45,10 @@
     "happypack": "^5.0.1",
     "html-webpack-plugin": "^5.3.2",
     "mini-css-extract-plugin": "^1.6.2",
+    "nodemon": "^2.0.12",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "postcss-loader": "^6.1.1",
+    "source-map-support": "^0.5.19",
     "style-loader": "^2.0.0",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.5",

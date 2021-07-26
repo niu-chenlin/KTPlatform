@@ -26,18 +26,18 @@ module.exports = {
         extensions: ['.vue', '.js', '.json']
     },
     // // 创建一个 vendors chunk，其中包括整个应用程序中 node_modules 的所有代码。
-    // optimization: { // 从 webpack 4 开始，会根据你选择的 mode 来执行不同的优化， 不过所有的优化还是可以手动配置和重写。
-    //     minimize: true, // 压缩JS代码 压缩后的代码不换行
-    //     splitChunks: { // 主要就是根据不同的策略来分割打包出来的bundle。
-    //         cacheGroups: {
-    //             vendors: {
-    //                 name: 'vendor',
-    //                 test: /[\\/]node_modules[\\/]/,
-    //                 chunks: "initial"
-    //             }
-    //         }
-    //     }
-    // },
+    optimization: { // 从 webpack 4 开始，会根据你选择的 mode 来执行不同的优化， 不过所有的优化还是可以手动配置和重写。
+        minimize: true, // 压缩JS代码 压缩后的代码不换行
+        splitChunks: { // 主要就是根据不同的策略来分割打包出来的bundle。
+            cacheGroups: {
+                vendors: {
+                    name: 'vendor',
+                    test: /[\\/]node_modules[\\/]/,
+                    chunks: "initial"
+                }
+            }
+        }
+    },
     module: {
         rules: [
             {
@@ -159,9 +159,10 @@ module.exports = {
             // favicon: path.join(__dirname, "dashboards/static/img/favicon.ico")
         }),
         new VueLoaderPlugin(), // vue项目独有，把vue模板中的template script style代码块运用到webpack的loader中
-        new webpack.DllReferencePlugin({ // 打包的main文件中不会包含动态链接库定义的文件
-            manifest: require('./static/dashboard/dll/vendor-manifest.json')
-        })
+        // new webpack.DllReferencePlugin({ // 打包的main文件中不会包含动态链接库定义的文件
+        //     context: __dirname,
+        //     manifest: require('./static/dashboard/dll/vendor-manifest.json')
+        // })
     ],
 };
 

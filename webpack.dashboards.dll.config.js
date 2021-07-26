@@ -13,6 +13,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DllPlugin({
+            context: __dirname,
             path: path.resolve('static/dashboard/dll', '[name]-manifest.json'),
             name: '[name]_library'
         })

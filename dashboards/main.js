@@ -1,10 +1,14 @@
+// import {createApp} from "vue";
 import Vue from "vue";
 import App from "./App";
 import "./static/style/main.less";
-
-console.log("test");
+//
+Vue.config.productionTip = false;
+// vue 2
 new Vue({
-    el: "#app-root",
-    component: {app: App},
-    template: "<App>"
-});
+    render: h => h(App),
+}).$mount('#app-root');
+
+// vue 3
+
+// createApp(App).mount('#app-root');
