@@ -3,9 +3,10 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-   entry: {
-       vendor: ['vue', 'vue/dist/vue.js', 'vue/dist/vue.common.js'] // 'vue-router','vuex',,'vue-loader/lib/component-normalizer.js',
-   },
+    mode: "development",
+    entry: {
+        vendor: ['vue'] // 'vue-router','vuex',,'vue-loader/lib/component-normalizer.js',
+    },
     output: {
         path: path.resolve('static/dashboard/dll'),
         filename: '[name].dll.js',
