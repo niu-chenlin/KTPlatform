@@ -2,6 +2,7 @@ import {createApp} from "vue";
 // import Vue from "vue";
 import App from "./App";
 import "./static/style/main.less";
+import img from "./static/image/logo.png";
 //
 // Vue.config.productionTip = false;
 // // vue 2

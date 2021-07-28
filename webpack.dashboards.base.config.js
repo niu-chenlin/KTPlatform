@@ -85,6 +85,14 @@ module.exports = {
                     }
                 ],
                 // use: 'happypack/loader?id=vue'
+            },
+            {
+                test: /\.(ico|svg|png|jpg)/,
+                // use: 'happypack/loader?id=image'
+                loader: "file-loader",
+                options: {
+                    name: 'img/[name].[ext]?[hash]'
+                }
             }
         ]
     },
@@ -125,6 +133,18 @@ module.exports = {
             //
         }),
         // new HappyPack({
+        //     id: 'image',
+        //     use: [
+        //         {
+        //             loader: 'file-loader',
+        //             options: {
+        //                 name: 'img/[name].[ext]?[hash]'
+        //             }
+        //         }
+        //     ],
+        //     threadPool: happyThreadPool
+        // }),
+        // new HappyPack({
         //     id: 'css',
         //     use: [
         //         // MiniCssExtractPlugin.loader,
@@ -157,7 +177,7 @@ module.exports = {
             template:"./dashboards/index.html",
             filename: '../../views/dashboard.html', // 将html文件写入到这里 - 输出的文件相对与dashboard（也就是output的path）
             inject: 'body',
-            // favicon: path.join(__dirname, "dashboards/static/img/favicon.ico")
+            favicon: path.join(__dirname, "dashboards/static/image/logo.png")
         }),
         new VueLoaderPlugin(), // vue项目独有，把vue模板中的template script style代码块运用到webpack的loader中
         new webpack.DllReferencePlugin({ // 打包的main文件中不会包含动态链接库定义的文件
