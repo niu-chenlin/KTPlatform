@@ -1,9 +1,11 @@
+// import Vue from "vue"; // vue 2
 import {createApp} from "vue";
-// import Vue from "vue";
 import App from "./App";
-import "./static/style/main.less";
+import ElementPlus from 'element-plus';
+// import "../node_modules/element-plus/packages/theme-chalk/src/base.scss";
+import "./static/style/style.scss";
 import img from "./static/image/logo.png";
-//
+
 // Vue.config.productionTip = false;
 // // vue 2
 // new Vue({
@@ -11,5 +13,6 @@ import img from "./static/image/logo.png";
 // }).$mount('#app-root');
 
 // vue 3
-
-createApp(App).mount('#app-root');
+const app = createApp(App);
+app.use(ElementPlus);
+app.mount('#app-root');

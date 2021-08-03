@@ -5,7 +5,7 @@ const webpack = require('webpack');
 module.exports = {
     mode: "development",
     entry: {
-        vendor: ['vue'] // 'vue-router','vuex',,'vue-loader/lib/component-normalizer.js',
+        vendor: ['vue', 'element-plugs'] // 'vue-router','vuex',,'vue-loader/lib/component-normalizer.js',
     },
     output: {
         path: path.resolve('static/dashboard/dll'),

@@ -24,7 +24,10 @@ module.exports = {
         publicPath: "/dashboard/" // html文件访问路径前加/dashboard/
     },
     resolve: {
-        extensions: ['.vue', '.js', '.json']
+        extensions: ['.vue', '.js', '.json'],
+        // alias: {
+        //     'fonts': path.resolve('/node_modules/element-plus/packages/theme-chalk/src')
+        // }
     },
     // // 创建一个 vendors chunk，其中包括整个应用程序中 node_modules 的所有代码。
     // optimization: { // 从 webpack 4 开始，会根据你选择的 mode 来执行不同的优化， 不过所有的优化还是可以手动配置和重写。
@@ -93,7 +96,17 @@ module.exports = {
                 options: {
                     name: 'img/[name].[ext]?[hash]'
                 }
-            }
+            },
+            // {
+            //     test: /\.(ttf|eot|woff)/,
+            //     loader: "file-loader",
+            //     options: {
+            //         outputPath: 'font',
+            //         publicPath: 'font',
+            //         name: '[name].[ext]?[hash]',
+            //
+            //     }
+            // },
         ]
     },
     // externals 和 DllPlugin 解决的是同一类问题：将依赖的框架等模块从构建过程中移除。

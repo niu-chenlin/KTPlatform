@@ -5,7 +5,25 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // css代码分
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // css去重
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin"); // 单线程的js压缩插件
 const WebpackUglifyJsPlugin = require("webpack-parallel-uglify-plugin"); // 多进程的js压缩插件 - 开启多个子进程进程压缩
-
+const pubStyleLoader = [
+    MiniCssExtractPlugin.loader,
+    // 'style-loader',
+    'css-loader',
+    {
+        loader: "postcss-loader",
+        options: {
+            sourceMap: true,
+            postcssOptions: {
+                plugins: [
+                    ['autoprefixer'],
+                    // cssnano 优化器也可以在loader中配置，除了 不能去重 之外，其他效果等同，所以小编这里就只在plugin中配置了，免得在配置一遍
+                    // ['cssnano'] // 上面指的是optimize-css-assets-webpack-plugin
+                    // 不压缩是最快的 使用optimize-css-assets-webpack-plugin 最快 使用cssnano最慢
+                ]
+            }
+        }
+    },
+];
 module.exports = webpackMerge.merge(baseConfig, {
     watch: true, // 执行该配置文件默认开启自动编译 类似 npm run webpack -w
     mode: "development", // 配置用于提供模式配置选项告诉webpack相应地使用其内置的优化 三个值可选：development production none
@@ -58,19 +76,21 @@ module.exports = webpackMerge.merge(baseConfig, {
             })
         ]
     },
+
     module: {
         rules: [
             {
-                test: /\.less$/,
-                exclude: /node_module/,
+                test:/\.scss?$/,
                 use: [
                     MiniCssExtractPlugin.loader,
-                    // 'style-loader',
-                    'css-loader',
+                    "css-loader",
                     {
                         loader: "postcss-loader",
                         options: {
                             sourceMap: true,
+                            // config: {
+                            //     path: path.join(__dirname, 'postcss.config.js')
+                            // },
                             postcssOptions: {
                                 plugins: [
                                     ['autoprefixer'],
@@ -81,7 +101,8 @@ module.exports = webpackMerge.merge(baseConfig, {
                             }
                         }
                     },
-                    'less-loader'
+                    "resolve-url-loader", // 用来解决在sass中引入第三方样式导致的url地址不正确问题  - 也可以重写Sass的变量地址
+                    "sass-loader"
                 ]
             },
         ]
