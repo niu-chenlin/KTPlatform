@@ -1,0 +1,9 @@
+{
+  "watch": ["./dist"],
+  "ignore": [],
+  "script": "index.js",
+  "options": {
+    "extensions": ["js", "coffee"],
+    "exec": "node"
+  }
+}

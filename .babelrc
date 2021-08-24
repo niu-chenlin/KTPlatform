@@ -13,13 +13,6 @@
         "helpers": false,
         "regenerator": true
       }
-    ],
-    [
-      "import",
-      {
-        "libraryName": "element-plus",
-        "styleLibraryName": "theme-chalk"
-      }
     ]
   ]
 }

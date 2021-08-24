@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/niu-chenlin/KTPlatform#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.15.2",
     "ejs": "^3.1.6",
     "element-plus": "^1.0.2-beta.64",
@@ -34,6 +35,8 @@
     "less-loader": "^10.0.1",
     "log4js": "^6.3.0",
     "vue": "^3.1.5",
+    "vue-router": "^3.5.2",
+    "vuex": "^4.0.2",
     "webpack": "^5.45.1"
   },
   "devDependencies": {

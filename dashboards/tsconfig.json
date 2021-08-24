@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es5",
+    "sourceMap": true,
+//    "jsx": "react",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "noImplicitAny": false, // 不检查隐式any类型
+    "allowJs": true,
+    "strict": false,
+    "lib": [
+      "esnext", "dom"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dashboards"
+  ]
+}

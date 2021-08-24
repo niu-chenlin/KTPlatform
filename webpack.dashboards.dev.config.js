@@ -1,3 +1,4 @@
+const path = require("path");
 const webpackMerge = require("webpack-merge");
 const baseConfig = require("./webpack.dashboards.base.config");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // webpack 可视化
@@ -68,7 +69,7 @@ module.exports = webpackMerge.merge(baseConfig, {
                 uglifyOptions: {
                     compress: {
                         // warnings: false
-                        drop_console: true // 压缩代码后去除console 成功
+                        // drop_console: true // 压缩代码后去除console 成功
                     }
                 },
                 sourceMap: true,
@@ -105,6 +106,14 @@ module.exports = webpackMerge.merge(baseConfig, {
                     "sass-loader"
                 ]
             },
+            {
+                test:/\.ts?$/,
+                exclude: /node_module/,
+                loader: 'ts-loader',
+                options: {
+                    configFile: path.join("dashboards/tsconfig.json")
+                }
+            }
         ]
     },
     plugins: [

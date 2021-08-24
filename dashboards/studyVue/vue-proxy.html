@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用es6 Proxy 实现vue3的双向绑定</title>
+</head>
+<body>
+<!--<p id="bindValue"></p>-->
+<!--<input oninput="change(event)" type="text">-->
+<div id="app">
+    <input type="text" v-model='count' />
+    <input type="button" value="增加" @click="add" />
+    <input type="button" value="减少" @click="reduce" />
+    <div v-bind="count"></div>
+</div>
+</body>
+<script type="text/javascript">
+    // let initData = { // 对应vue的data
+    //     value: "",
+    //     deepData: {
+    //         value: ""
+    //     }
+    // };
+    // function change(e) {
+    //     bindValue(e.target.value);
+    // }
+    // function bindValue(value) {
+    //     let dom = document.getElementById("bindValue");
+    //     dom.innerText = value;
+    // }
+    // // bindValue(initData.value);
+    //
+    // // 操作Proxy返回的对象才能触发get set等  这种对编程语言进行编程的方式称为 元编程
+    // let initObj = new Proxy(initData, { // initObj: 被代理完成之后返回的对象。
+    //     get(target, key, receiver) { // receiver就是返回的对象 p是属性名
+    //         console.log(target, key, receiver);
+    //         // target[key] = value;
+    //         return Reflect.get(...arguments); // 我们希望任何方法都绑定到这个 Proxy，而不只是目标对象
+    //     },
+    //     set(target, key, value, receiver) {
+    //         console.log(target, key, receiver);
+    //         // target[key] = value;
+    //         return Reflect.set(...arguments); // 如果没有定义某种操作，那么这种操作会被转发到目标对象身上。
+    //     }
+    // });
+    //
+    //
+    // // initObj.value = "a";
+    // console.log(initObj.value);
+    // console.log(initObj.deepData.value);
+    // initObj.deepData.value = "deep";
+    // console.log(initData.deepData.value);
+
+    // es6 Reflect对象？ 延申思考：
+    // 1.Proxy和Object已经包含了Reflect所有的方法，为什么要设计Reflect对象。
+    // 2.Reflect的作用 - 尤其在Proxy为什么需要重写 - 官方解释：Proxy只对源对象做出反应，源对象的属性(属性如果是一个对象)无法触发数据劫持
+
+    // （1） 将 Object 对象的一些明显属于语言内部的方法（比如 Object.defineProperty ），放到 Reflect 对象上。
+    // （2）修改某些 Object 方法的返回结果，让其变得更合理。比如，Object.defineProperty(obj, name, desc) 在无法定义属性时，
+    //  会抛出一个错误，定义成功时返回修改后的对象。而 Reflect.defineProperty(obj, name, desc) 在定义属性成功时返回 true ，失败时返回 false。
+    // （3）让 Object 操作都变成函数行为。某些 Object 操作是命令式，比如 name in obj 和 delete obj[name]，而 Reflect.has(obj, name) 和
+    // Reflect.deleteProperty(obj, name) 让它们变成了函数行为。
+    // （4）Reflect 对象的方法与 Proxy 对象的方法一 一对应，只要是 Proxy 对象的方法，就能在 Reflect对象上找到对应的方法。
+    // 这就让 Proxy 对象可以方便地调用对应的 Reflect 方法，完成默认行为，作为修改行为的基础。也就是说，不管 Proxy 怎么修改默认行为，
+    // 总可以在 Reflect 上获取默认行为。
+
+    // Reflect 的主要作用就是当你改写这些方法的时候，让你能够调用原方法。
+
+    // 可以说是各有优劣:
+    // 单向数据流其实是没有状态的, 这使得单向绑定能够避免状态管理在复杂度上升时产生的各种问题, 程序的调试会变得相对容易,
+    // 但强制要求编码时设计思维的一致性.双向数据流是自动管理状态的, 但是在实际应用中会有很多不得不手动处理状态变化的逻辑,
+    // 使得程序复杂度上升, 难以调试, 但程序各个部分自成一体, 不强制要求一致的编码.如果你的程序需要一个统一的数据源, 应该选择单向数据流,
+    // 所有的数据变化都是可观测的, 数据自上而下流动, 即使出问题也很容易找到源头.如果你的程序本身有多个数据源, 或者是程序的逻辑本身会产生很多的副作用,
+    // 应该选择双向绑定的程序, 将大项目分化为小项目, 逐个击破.
+
+
+    // 手动实现vue3双向绑定
+    class Vue {
+        constructor(options) {
+            this.$el = document.querySelector(options.el);
+            this.$methods = options.methods;
+            this._binding = {};
+            // 1. 需要实现一个数据监听器 Observer, 能够对所有数据进行监听，如果有数据变动的话，拿到最新的值并通知订阅者Watcher.
+            this._observer(options.data);
+            // 2. 需要实现一个指令解析器Compile，它能够对每个元素的指令进行扫描和解析，根据指令模板替换数据，以及绑定相对应的函数。
+            this._comple(this.$el);
+        }
+        _pushWatcher(watcher) {
+            if(!this._binding[watcher.key]) {
+                this._binding[watcher.key] = [];
+            }
+            this._binding[watcher.key].push(watcher);
+        }
+        /**
+           observer的作用是能够对所有的数据进行监听操作，通过使用Proxy对象
+           中的set方法来监听，如有发生变动就会拿到最新值通知订阅者。
+         */
+        _observer(datas) {
+            const me = this;
+            const handler = {
+                set(target, key, value) {
+                    const rets = Reflect.set(target, key, value);
+                    me._binding[key].map(item => item.update());
+                    return rets;
+                }
+            };
+            this.$data = new Proxy(datas, handler);
+        }
+        /**
+         指令解析器，对每个元素节点的指令进行扫描和解析，根据指令模板替换数据，以及绑定相对应的更新函数
+        */
+        _comple(root) {
+            const nodes = Array.prototype.slice.call(root.children);
+            const data = this.$data;
+            nodes.map(node => {
+                if(node.children && node.children.length) {
+                    this._comple(node.children);
+                }
+                const $input = node.tagName.toLocaleUpperCase() === "INPUT";
+                const $textarea = node.tagName.toLocaleUpperCase() === "TEXTAREA";
+                const vmodel = node.hasAttribute("v-model");
+                // 如果是input框 或 textarea 的话，并且带有 v-model 属性的
+                if((vmodel && $input) || (vmodel && $textarea)) {
+                    const key = node.getAttribute("v-model");
+                    this._pushWatcher(new Watcher(node, 'value', data, key));
+                    node.addEventListener('input', () => {
+                        data[key] = node.value;
+                    })
+                }
+                if(node.hasAttribute("v-bind")) {
+                    const key = node.getAttribute("v-bind");
+                    this._pushWatcher(new Watcher(node, 'innerHTML', data, key));
+                }
+                if(node.hasAttribute("@click")) {
+                    const methodName = node.getAttribute("@click");
+                    const method = this.$methods[methodName].bind(data);
+                    node.addEventListener('click', method);
+                }
+            });
+        }
+    }
+    /**
+     watcher的作用是 链接Observer 和 Compile的桥梁，能够订阅并收到每个属性变动的通知，
+     执行指令绑定的响应的回调函数，从而更新视图。
+     */
+    class Watcher {
+        constructor(node, attr, data, key) {
+            this.node = node;
+            this.attr = attr;
+            this.data = data;
+            this.key = key;
+        }
+        // 3. 需要实现一个Watcher, 它是链接Observer和Compile的桥梁，它能够订阅并收到每个属性变动的通知，然后会执行指令绑定的相对应
+        update() {
+            this.node[this.attr] = this.data[this.key];
+        }
+    }
+</script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            count: 0
+        },
+        methods: {
+            add() {
+                this.count++;
+            },
+            reduce() {
+                this.count--;
+            }
+        }
+    })
+</script>
+<script type="text/javascript">
+    let targetObj = {
+        id: 1,
+        name: 'test Proxy',
+        deepObj: {
+            id: 2,
+            name: 'deep Proxy',
+        }
+    };
+    let proxy = new Proxy(targetObj, {
+        get(target, key, receiver) {
+            console.log("触发了Get");
+            console.log(target);
+            console.log(key);
+            return target[key]
+        },
+        set(target, key, value, receiver) {
+            console.log("触发了Set");
+            console.log(target, key, value, receiver);
+            target[key] = value;
+        }
+    });
+    proxy.deepObj.name = "aaa"; // 这种情况只触发了Get，说明代理层只对目标对象做出响应（因为先proxy.deepObj，所以proxy首先认为是get操作）
+    // console.log(proxy.deepObj.name);
+</script>
+</html>

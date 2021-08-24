@@ -24,10 +24,13 @@ module.exports = {
         publicPath: "/dashboard/" // html文件访问路径前加/dashboard/
     },
     resolve: {
-        extensions: ['.vue', '.js', '.json'],
-        // alias: {
-        //     'fonts': path.resolve('/node_modules/element-plus/packages/theme-chalk/src')
-        // }
+        extensions: ['.vue', '.js', '.json', '.ts'],
+        alias: {
+            // vue有两种形式的代码compiler（模板）模式，和runtime模式（运行时），vue模板的package.json中的main字段默认为runtime模式，指向的是'dist/vue.runtime.common.js'位置。
+            // 为避免runtime版本在运行时编译无法解析template错误，使用别名替换掉默认的runtime模式
+            // 'vue$': 'vue/dist/vue.esm.js' // vue结尾的导入将被替换 这只替换不会在.vue文件中体现，因为.vue文件中的template被vue-loader插件替换成了render函数
+            // 'fonts': path.resolve('/node_modules/element-plus/packages/theme-chalk/src')
+        }
     },
     // // 创建一个 vendors chunk，其中包括整个应用程序中 node_modules 的所有代码。
     // optimization: { // 从 webpack 4 开始，会根据你选择的 mode 来执行不同的优化， 不过所有的优化还是可以手动配置和重写。
