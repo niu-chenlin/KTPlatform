@@ -7,10 +7,17 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "noImplicitAny": false, // 不检查隐式any类型
+    // 请注意，必须包含 strict: true (或至少包含 noImplicitThis: true，
+    // 它是 strict 标志的一部分) 才能在组件方法中利用 this 的类型检查，否则它总是被视为 any 类型。 存在隐式 any 时抛错
+//    "noImplicitReturns": false, // 不存在 return 时抛错
+    "noImplicitThis": true, // 隐式检查this  this 可能为 any 时抛错
     "allowJs": true,
     "strict": false,
     "lib": [
       "esnext", "dom"
+    ],
+    "typeRoots": [ // 类型相关的选项包括 typeRoots 和 types 。
+      "globalDeclare.d.ts"
     ]
   },
   "exclude": [

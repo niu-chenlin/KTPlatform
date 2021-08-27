@@ -13,6 +13,7 @@ module.exports = {
             "import",
             {
                 libraryName: 'element-plus',
+                // "styleLibraryName": "~dashboards/static/style/element-variables.scss",
                 customStyleName: (name) => {
                     name = name.slice(3);
                     return `element-plus/packages/theme-chalk/src/${name}.scss`;

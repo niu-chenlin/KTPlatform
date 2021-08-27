@@ -1,37 +1,50 @@
 <template>
     <el-container style="height: 100%;">
-        <el-header>Header</el-header>
+        <el-header>
+            <header-view></header-view>
+        </el-header>
         <el-container>
-            <el-aside width="200px">Aside</el-aside>
+            <el-aside width="200px">
+                <aside-view></aside-view>
+            </el-aside>
             <el-container>
-                <el-main>Main</el-main>
-                <el-footer>Footer</el-footer>
+                <el-main>
+                    <!--<router-view></router-view>-->
+                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                </el-main>
+                <el-footer>
+                    <footer-view></footer-view>
+                </el-footer>
             </el-container>
         </el-container>
     </el-container>
 </template>
 
 <script>
-    import { ElContainer, ElHeader, ElAside, ElMain, ElFooter } from "element-plus";
-    export default {
+    import {defineComponent} from "vue";
+    import { ElContainer, ElHeader, ElAside, ElMain, ElFooter, ElInput } from "element-plus";
+    import HeaderView from "./header-view";
+    import AsideView from "./aside-view";
+    import FooterView from "./footer-view";
+    export default defineComponent({
         name: "main-view",
-        components: { ElContainer, ElHeader, ElAside, ElMain, ElFooter },
+        components: {ElInput, AsideView, HeaderView, ElContainer, ElHeader, ElAside, ElMain, ElFooter, FooterView },
         data() {
 
         },
-    }
+    })
 </script>
 
 <style scoped lang="scss">
     .el-header, .el-footer {
-        background-color: #3e423d;
+        background-color: #314157;
         color: white;
         text-align: center;
         /*line-height: 60px;*/
     }
 
     .el-aside {
-        background-color: #D3DCE6;
+        background-color: #314157;
         color: #333;
         text-align: center;
         /*line-height: 200px;*/

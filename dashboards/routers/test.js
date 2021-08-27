@@ -1,3 +1,5 @@
+// 这是vue路由滚动到指定位置的代码
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 

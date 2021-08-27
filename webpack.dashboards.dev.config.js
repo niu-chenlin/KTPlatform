@@ -111,6 +111,7 @@ module.exports = webpackMerge.merge(baseConfig, {
                 exclude: /node_module/,
                 loader: 'ts-loader',
                 options: {
+                    appendTsSuffixTo: [/\.vue$/], // 解析vue lang=ts
                     configFile: path.join("dashboards/tsconfig.json")
                 }
             }

@@ -6,7 +6,8 @@
     <!--<vuex-modules-component/>-->
     <!--<vue-reactive/>-->
     <!--<main-view/>-->
-    <study-base></study-base>
+    <!--<study-base></study-base>-->
+    <router-view></router-view>
 </template>
 
 <script>
