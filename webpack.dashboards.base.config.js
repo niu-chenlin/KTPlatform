@@ -92,14 +92,14 @@ module.exports = {
                 ],
                 // use: 'happypack/loader?id=vue'
             },
-            {
-                test: /\.(ico|svg|png|jpg)/,
-                // use: 'happypack/loader?id=image'
-                loader: "file-loader",
-                options: {
-                    name: 'img/[name].[ext]?[hash]'
-                }
-            },
+            // {
+            //     test: /\.(ico|svg|png|jpg)/,
+            //     // use: 'happypack/loader?id=image'
+            //     loader: "file-loader",
+            //     options: {
+            //         name: 'img/[name].[ext]?[hash]'
+            //     }
+            // },
             // {
             //     test: /\.(ttf|eot|woff)/,
             //     loader: "file-loader",

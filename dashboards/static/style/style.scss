@@ -10,9 +10,6 @@ html, body {
 *{
   margin:0;
 }
-$--test-color: red;
-$--test-color: blue !default;
-$--test-color: black;
 
 @keyframes slide {
   0%   {width: 0}
@@ -37,7 +34,7 @@ $--test-color: black;
   padding: 0 15px;
   background-color: white;
   border-radius: 10px;
-  color: $--test-color;
+  color: #a088e5;
   .el-row {
     margin: 10px 0;
     cursor: pointer;
@@ -53,12 +50,8 @@ $--test-color: black;
 .g-button-color {
 
 }
-$--colors: ("primary": ("base": black));
-$--color-primary: red;
-:root {
-  --el-color-primary: #{$--color-primary};
+#register-view {
+  background: url(".././image/register.jpg") no-repeat;
 }
-
 @import "~element-plus/packages/theme-chalk/src/base";
 @import "./iconfont";
-@import "./element-variables";

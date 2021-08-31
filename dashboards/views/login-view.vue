@@ -1,7 +1,7 @@
 <template>
     <div id="login-view">
         <div class="left">
-            <h2><i class="iconlogo"></i>任务发布系统</h2>
+            <h2>任务发布系统</h2>
             <span>©2021 朝森科技有限公司. All rights reserved. </span>
         </div>
         <div class="right">
@@ -28,6 +28,16 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+
+    <div id="register-view">
+        <div class="register-title">
+            <span>欢迎注册</span>
+            <span>去登录</span>
+        </div>
+        <div class="register-content">
+
         </div>
     </div>
 </template>
@@ -114,6 +124,7 @@
             justify-content: center;
             align-items: center;
             .login-chunk {
+                display: none;
                 box-shadow: 0 0 15px #888888;
                 border-radius: 10px;
                 width: 40%;
@@ -165,6 +176,23 @@
                 }
 
             }
+        }
+    }
+    #register-view {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        /*background: url("../static/image/register.jpg") no-repeat;*/
+        .register-title {
+
+        }
+        .register-content {
+
         }
     }
 </style>
