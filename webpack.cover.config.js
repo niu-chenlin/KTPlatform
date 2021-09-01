@@ -65,13 +65,13 @@ module.exports = {
                     configFile: path.join("dashboards/tsconfig.json")
                 }
             },
-            {
-                test: /\.(ico|svg|png|jpg)/,
-                loader: "file-loader",
-                options: {
-                    name: 'img/[name].[ext]?[hash]'
-                }
-            },
+            // {
+            //     test: /\.(ico|svg|png|jpg)/,
+            //     loader: "file-loader",
+            //     options: {
+            //         name: 'img/[name].[ext]?[hash]'
+            //     }
+            // },
         ]
     },
     mode: "development",

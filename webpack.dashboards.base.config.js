@@ -100,16 +100,35 @@ module.exports = {
             //         name: 'img/[name].[ext]?[hash]'
             //     }
             // },
-            // {
-            //     test: /\.(ttf|eot|woff)/,
-            //     loader: "file-loader",
-            //     options: {
-            //         outputPath: 'font',
-            //         publicPath: 'font',
-            //         name: '[name].[ext]?[hash]',
-            //
-            //     }
-            // },
+            {
+                test: /\.(ttf|eot|woff)/,
+                type: "asset/resource",
+                generator: {
+                    filename: "font/[name].[ext]?[hash]"
+                }
+                // loader: "file-loader",
+                // options: {
+                //     outputPath: 'font',
+                //     publicPath: 'font',
+                //     name: '[name].[ext]?[hash]',
+                // }
+            },
+            {
+                test: /\.(ico|svg|png|jpg|jpeg)/,
+                // type 值
+                // 1 asset/resource 发送一个单独的文件并导出URL，替代file-loader
+                // 2asset/inline 导出一个资源的data URL，替代url-loader
+                // 3asset/source 到处资源的源代码，之前通过使用raw-loader实现。
+                // 4 asset在导出一个data URL和发送一个单独的文件之间做选择，之前通过url-loader+limit属性实现。
+                type: "asset/resource",
+                generator: {
+                    filename: "img/[name].[ext]?[hash]"
+                }
+                // loader: "file-loader",
+                // options: { // 在webpack5中我们使用assets-module，因为在v5中url-loader已经被废弃
+                //     name: './publicStatic/img/[name].[ext]?[hash]'
+                // }
+            }
         ]
     },
     // externals 和 DllPlugin 解决的是同一类问题：将依赖的框架等模块从构建过程中移除。
